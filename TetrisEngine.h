@@ -14,6 +14,7 @@ private:
 	int score = 0, level = 1;
 	int turbo = 0;
 	int linesCleared = 0;
+	int noIPieceCount = 0;
 	float gravity = 1;
 	float lastTickTimeDif = 0.0f;
 	float lastHMovementTime = 0.0f;
@@ -21,7 +22,7 @@ private:
 	wstring currentPlayer;
 	bool hardDroped = false;
 	bool held = false;
-	short bKey[5] = {};
+	short bKey[6] = {};
 
 public:
 	TetrisEngine() {};
@@ -55,5 +56,7 @@ private:
 
 public: //Defaults
 	static constexpr int DEFAULT_BLOCK_SIZE_PIXEL = 30;
+	static constexpr int DEAFULT_SPAWN_X = 5;
+	static constexpr int DEAFULT_SPAWN_Y = 0;
 };
 

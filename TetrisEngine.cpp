@@ -7,8 +7,8 @@ bool TetrisEngine::OnUserCreate()
 	nextPiece = Pieces::RandomPiece(rand());
 	heldPiece = Pieces::pBlank;
 	
-	currentPieceX = 5; //FOR TESTING
-	currentPieceY = 0; //FOR TESTING
+	currentPieceX = TetrisEngine::DEAFULT_SPAWN_X;
+	currentPieceY = TetrisEngine::DEAFULT_SPAWN_Y; 
 	currentPlayer = L"";
 	
 	return true;
@@ -50,10 +50,24 @@ void TetrisEngine::StateUpdate(float fElapsedTime)
 				gravity += 0.2f;
 			}
 			RefitBoard();
-			Spawn(nextPiece, 5, 0);
-			if (!board.CanPieceFit(currentPiece, currentPieceX, currentPieceY)) Restart();	
+			Spawn(nextPiece, TetrisEngine::DEAFULT_SPAWN_X, TetrisEngine::DEAFULT_SPAWN_Y);
+			if (!board.CanPieceFit(currentPiece, currentPieceX, currentPieceY)) Restart();
+			held = false;	
 			nextPiece = Pieces::RandomPiece(rand());
-			held = false;
+			if (noIPieceCount == 12)
+			{
+				nextPiece = Pieces::pI;
+			}
+			if (!(nextPiece == Pieces::pI))
+			{
+				noIPieceCount++;
+			}
+			else
+			{
+				noIPieceCount = 0;
+			}
+
+			
 		}else currentPieceY++;	
 		lastTickTimeDif = 0.0f;
 	}
