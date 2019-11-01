@@ -34,61 +34,63 @@ namespace Pieces
 	{
 		return (firstRow << 12) | (secondRow << 8) | (thirdRow << 4) | fourthRow;
 	}
-	static Piece RandomPiece()
-	{
-		int r = rand() % 7;
-		if (r == 0) return MakePiece(0b0000, 0b0110, 0b0110, 0b0000);
-		if (r == 1) return MakePiece(0b0000, 0b1111, 0b0000, 0b0000);
-		if (r == 2) return MakePiece(0b0000, 0b0100, 0b1110, 0b0000);
-		if (r == 3) return MakePiece(0b0000, 0b0010, 0b1110, 0b0000);
-		if (r == 4) return MakePiece(0b0000, 0b1000, 0b1110, 0b0000);
-		if (r == 5) return MakePiece(0b0000, 0b0110, 0b1100, 0b0000);
-		else           return MakePiece(0b0000, 0b1100, 0b0110, 0b0000);
-	}
 	static constexpr Piece pO = MakePiece(0b0000,
-										  0b0110,
-										  0b0110,
-										  0b0000);
-										  
+		0b0110,
+		0b0110,
+		0b0000);
+
 	static constexpr Piece pI = MakePiece(0b0000,
-										  0b1111,
-										  0b0000, 
-										  0b0000);
+		0b1111,
+		0b0000,
+		0b0000);
 
 	static constexpr Piece pT = MakePiece(0b0000,
-										  0b0100,
-										  0b1110,
-										  0b0000);
-										  
+		0b0100,
+		0b1110,
+		0b0000);
+
 	static constexpr Piece pL = MakePiece(0b0000,
-										  0b0010,
-										  0b1110,
-										  0b0000);
+		0b0010,
+		0b1110,
+		0b0000);
 
 	static constexpr Piece pJ = MakePiece(0b0000,
-										  0b1000,
-										  0b1110,
-										  0b0000);
+		0b1000,
+		0b1110,
+		0b0000);
 
 	static constexpr Piece pS = MakePiece(0b0000,
-										  0b0110,
-										  0b1100,
-										  0b0000);
+		0b0110,
+		0b1100,
+		0b0000);
 
 	static constexpr Piece pZ = MakePiece(0b0000,
-										  0b1100,
-										  0b0110,
-										  0b0000);
+		0b1100,
+		0b0110,
+		0b0000);
 
 	static constexpr Piece pBlank = MakePiece(0b0000,
-											  0b0000,
-											  0b0000,
-											  0b0000);
+		0b0000,
+		0b0000,
+		0b0000);
+
+	static constexpr Piece RandomPiece(int rand)
+	{
+		int r = rand % 7;
+		if (r == 0) return pO;
+		if (r == 1) return pI;
+		if (r == 2) return pT;
+		if (r == 3) return pL;
+		if (r == 4) return pJ;
+		if (r == 5) return pS;
+		else        return pZ;
+	}
+	
 }
 
 namespace Rotation
 {
-	static int LEFT(int x, int y) { return 3 - y + x * 4; }
-	static int RIGHT(int x, int y) { return 12 + y - x * 4; }
+	static constexpr int LEFT(int x, int y) { return 3 - y + x * 4; }
+	static constexpr int RIGHT(int x, int y) { return 12 + y - x * 4; }
 }
 

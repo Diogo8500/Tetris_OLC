@@ -3,8 +3,8 @@
 bool TetrisEngine::OnUserCreate()
 {
 	srand(time(NULL));
-	currentPiece = Pieces::RandomPiece();
-	nextPiece = Pieces::RandomPiece();
+	currentPiece = Pieces::RandomPiece(rand());
+	nextPiece = Pieces::RandomPiece(rand());
 	heldPiece = Pieces::pBlank;
 	
 	currentPieceX = 5; //FOR TESTING
@@ -27,6 +27,7 @@ void TetrisEngine::DrawRoutine()
 	DrawBoard();
 	DrawCurrentPiece();
 	DrawNextPiece();
+	DrawHeldPiece();
 	DrawScore();
 	DrawLevel();
 }
@@ -49,8 +50,10 @@ void TetrisEngine::StateUpdate(float fElapsedTime)
 				gravity += 0.2f;
 			}
 			RefitBoard();
-			Spawn();
+			Spawn(nextPiece, 5, 0);
 			if (!board.CanPieceFit(currentPiece, currentPieceX, currentPieceY)) Restart();	
+			nextPiece = Pieces::RandomPiece(rand());
+			held = false;
 		}else currentPieceY++;	
 		lastTickTimeDif = 0.0f;
 	}
@@ -69,19 +72,18 @@ void TetrisEngine::Restart()
 	gravity = 1;
 }
 
-void TetrisEngine::Spawn()
+void TetrisEngine::Spawn(Piece p, int x, int y)
 {
-	currentPiece = nextPiece;
-	nextPiece = Pieces::RandomPiece();
-	currentPieceX = 5;
-	currentPieceY = 0;
+	currentPiece = p;
+	//nextPiece = Pieces::RandomPiece();
+	currentPieceX = x;
+	currentPieceY = y;
 }
 
 void TetrisEngine::CheckUserInput()
 {
-
-	for (size_t k = 0; k < 5; k++)							  //R   L   U   D  Space
-		bKey[k] = (0x8000 & GetAsyncKeyState((unsigned char)("\x27\x25\x26\x28\x20"[k]))) != 0;
+	for (size_t k = 0; k < 6; k++)							  //R   L  U   D  Space Ctrl
+		bKey[k] = (0x8000 & GetAsyncKeyState((unsigned char)("\x27\x25\x26\x28\x20\x11"[k]))) != 0;
 	
 	if (bKey[0])
 	{
@@ -102,6 +104,11 @@ void TetrisEngine::CheckUserInput()
 	if (bKey[4])
 	{
 		HardDrop();
+	}
+	else
+	if (bKey[5])
+	{
+		HoldPiece();
 	}
 	else
 	{
@@ -153,6 +160,26 @@ void TetrisEngine::HardDrop()
 			currentPieceY++;
 		lastTickTimeDif = 1;
 		hardDroped = true;
+	}
+}
+
+void TetrisEngine::HoldPiece()
+{
+	if (!held)
+	{
+		if (heldPiece == Pieces::pBlank)
+		{
+			heldPiece = currentPiece;
+			Spawn(nextPiece, 5, 0);
+			nextPiece = Pieces::RandomPiece(rand());
+		}
+		else
+		{
+			Piece aux = currentPiece;
+			Spawn(heldPiece, 5, 0);
+			heldPiece = aux;
+		}
+		held = true;
 	}
 }
 
@@ -222,16 +249,24 @@ void TetrisEngine::DrawNextPiece()
 			if (nextPiece.Solid(x - board.Width() - 4, y - 3)) Draw(x, y);
 }
 
+void TetrisEngine::DrawHeldPiece()
+{
+	DrawStringAlpha(15, 8, L"Hold");
+	for (int y = 9; y < 13; y++)
+		for (int x = board.Width() + 4; x < board.Width() + 8; x++)
+			if (heldPiece.Solid(x - board.Width() - 4, y - 9)) Draw(x, y);
+}
+
 void TetrisEngine::DrawScore()
 {
-	DrawStringAlpha(16, 14, L"Score:");
-	DrawStringAlpha(16, 15, to_wstring(score));
+	DrawStringAlpha(16, 20, L"Score:");
+	DrawStringAlpha(16, 21, to_wstring(score));
 }
 
 void TetrisEngine::DrawLevel()
 {
-	DrawStringAlpha(16, 11, L"Level:");
-	DrawStringAlpha(16, 12, to_wstring(level));
+	DrawStringAlpha(16, 17, L"Level:");
+	DrawStringAlpha(16, 18, to_wstring(level));
 }
 
 

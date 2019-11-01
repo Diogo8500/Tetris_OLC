@@ -125,14 +125,12 @@
   <ItemGroup>
     <ClCompile Include="BaseEngineGL.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Test.cpp" />
     <ClCompile Include="TetrisBoard.cpp" />
     <ClCompile Include="TetrisEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseEngineGL.h" />
     <ClInclude Include="Pieces.h" />
-    <ClInclude Include="Test.h" />
     <ClInclude Include="TetrisBoard.h" />
     <ClInclude Include="TetrisEngine.h" />
   </ItemGroup>

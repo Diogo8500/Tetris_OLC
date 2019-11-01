@@ -20,6 +20,7 @@ private:
 	float lastRMovementTime = 0.0f;
 	wstring currentPlayer;
 	bool hardDroped = false;
+	bool held = false;
 	short bKey[5] = {};
 
 public:
@@ -33,12 +34,13 @@ private:
 	void StateUpdate(float fElapsedTime);
 
 	void Restart();
-	void Spawn();
+	void Spawn(Piece p, int x, int y);
 	void CheckUserInput();
 	void MovePieceRight();
 	void MovePieceLeft();
 	void RotatePiece();
 	void HardDrop();
+	void HoldPiece();
 	int ClearCompleteLines();
 	void RefitBoard();
 	int Score(int level, int nLines);
@@ -47,6 +49,7 @@ private:
 	void DrawBoard();
 	void DrawCurrentPiece();
 	void DrawNextPiece();
+	void DrawHeldPiece();
 	void DrawScore();
 	void DrawLevel();
 
